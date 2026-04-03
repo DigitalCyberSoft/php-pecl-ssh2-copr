@@ -1,4 +1,4 @@
-# COPR Makefile for automated php-ssh2 builds from git master
+# COPR Makefile for automated php-pecl-ssh2 builds from git master
 # Builds PHP extension from latest git commit
 
 # COPR provides outdir, set default for local testing
@@ -8,7 +8,7 @@ RELEASE := $(shell cat $(CURDIR)/release 2>/dev/null || echo 1)
 
 # Default target for COPR
 srpm:
-	@echo "=== Starting php-ssh2 SRPM build from GitHub master ==="
+	@echo "=== Starting php-pecl-ssh2 SRPM build from GitHub master ==="
 	@echo "Output directory: $(outdir)"
 	@echo "Working directory: $$(pwd)"
 	@echo "User: $$(whoami)"
@@ -39,7 +39,7 @@ srpm:
 	rm -rf pecl-networking-ssh2-master; \
 	git clone --depth=50 https://github.com/php/pecl-networking-ssh2.git pecl-networking-ssh2-master || exit 1; \
 	\
-	echo "=== Getting php-ssh2 version info ==="; \
+	echo "=== Getting php-pecl-ssh2 version info ==="; \
 	cd pecl-networking-ssh2-master && \
 	COMMIT=$$(git rev-parse HEAD); \
 	SHORTCOMMIT=$$(git rev-parse --short HEAD); \
@@ -56,13 +56,13 @@ srpm:
 	FULL_VERSION="$$VERSION"_"$$SHORTCOMMIT"; \
 	FEDORA_VER=$$(rpm -E %fedora 2>/dev/null || echo "42"); \
 	echo "Checking COPR for existing builds of version $$FULL_VERSION on Fedora $$FEDORA_VER"; \
-	COPR_URL="https://download.copr.fedorainfracloud.org/results/reversejames/php-ssh2/fedora-$$FEDORA_VER-x86_64"; \
-	BUILD_DIRS=$$(curl -s "$$COPR_URL/" 2>/dev/null | grep -oE '[0-9]+-php-ssh2' | head -10); \
+	COPR_URL="https://download.copr.fedorainfracloud.org/results/reversejames/php-pecl-ssh2/fedora-$$FEDORA_VER-x86_64"; \
+	BUILD_DIRS=$$(curl -s "$$COPR_URL/" 2>/dev/null | grep -oE '[0-9]+-php-pecl-ssh2' | head -10); \
 	EXISTING_RELEASES=""; \
 	for dir in $$BUILD_DIRS; do \
-		RPMS=$$(curl -s "$$COPR_URL/$$dir/" 2>/dev/null | grep -oE "php-ssh2-$$VERSION-[0-9]+.*git$$SHORTCOMMIT.*\.fc[0-9]+\.x86_64\.rpm" | head -1); \
+		RPMS=$$(curl -s "$$COPR_URL/$$dir/" 2>/dev/null | grep -oE "php-pecl-ssh2-$$VERSION-[0-9]+.*git$$SHORTCOMMIT.*\.fc[0-9]+\.x86_64\.rpm" | head -1); \
 		if [ -n "$$RPMS" ]; then \
-			REL=$$(echo "$$RPMS" | sed "s/.*-$$VERSION-\([0-9]\+\).*\.fc[0-9]\+\.x86_64\.rpm/\1/"); \
+			REL=$$(echo "$$RPMS" | sed "s/.*ssh2-$$VERSION-\([0-9]\+\).*\.fc[0-9]\+\.x86_64\.rpm/\1/"); \
 			EXISTING_RELEASES="$$EXISTING_RELEASES $$REL"; \
 		fi; \
 	done; \
@@ -75,7 +75,7 @@ srpm:
 		echo "No existing builds found for $$FULL_VERSION, starting with release 1"; \
 	fi; \
 	\
-	echo "=== Creating php-ssh2 tarball ==="; \
+	echo "=== Creating php-pecl-ssh2 tarball ==="; \
 	tar czf ssh2-$$VERSION.tar.gz -C . pecl-networking-ssh2-master --transform "s/^pecl-networking-ssh2-master/ssh2-$$VERSION/" || exit 1; \
 	\
 	echo "=== Copying upstream package.xml ==="; \
@@ -92,7 +92,7 @@ srpm:
 	echo '%global _configure  ../%{sources}/configure'; \
 	echo ''; \
 	echo 'Summary:       PHP bindings for libssh2'; \
-	echo 'Name:          php-%{pecl_name}'; \
+	echo 'Name:          php-pecl-%{pecl_name}'; \
 	echo "Version:       $$VERSION"; \
 	echo "Release:       $(RELEASE).$${RELEASE_NUM}.git$${SHORTCOMMIT}%{?dist}"; \
 	echo 'License:       PHP-3.01'; \
@@ -109,8 +109,8 @@ srpm:
 	echo 'Requires:      php(zend-abi) = %{php_zend_api}'; \
 	echo 'Requires:      php(api) = %{php_core_api}'; \
 	echo ''; \
-	echo 'Provides:      php-pecl-%{pecl_name}          = %{version}'; \
-	echo 'Provides:      php-pecl-%{pecl_name}%{?_isa}  = %{version}'; \
+	echo 'Provides:      php-%{pecl_name}                 = %{version}-%{release}'; \
+	echo 'Provides:      php-%{pecl_name}%{?_isa}       = %{version}-%{release}'; \
 	echo 'Provides:      php-pecl(%{pecl_name})         = %{version}'; \
 	echo 'Provides:      php-pecl(%{pecl_name})%{?_isa} = %{version}'; \
 	echo ''; \
@@ -218,7 +218,7 @@ srpm:
 	echo "* $$(date '+%a %b %d %Y') COPR Builder - $$VERSION-$$RELEASE_NUM.git$$SHORTCOMMIT"; \
 	echo '- Automated build from GitHub master branch'; \
 	echo "- Git commit: $$SHORTCOMMIT"; \
-	) > php-ssh2.spec || exit 1; \
+	) > php-pecl-ssh2.spec || exit 1; \
 	echo "Spec file generated"; \
 	\
 	echo "=== Building SRPM ==="; \
@@ -228,7 +228,7 @@ srpm:
 		--define "_builddir $$(pwd)" \
 		--define "_srcrpmdir $(outdir)" \
 		--define "_rpmdir $$(pwd)" \
-		php-ssh2.spec || exit 1; \
+		php-pecl-ssh2.spec || exit 1; \
 	\
 	echo "=== SRPM build complete ==="; \
 	ls -la $(outdir)/*.src.rpm
