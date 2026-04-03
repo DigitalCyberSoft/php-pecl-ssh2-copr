@@ -1,17 +1,17 @@
 {
   "php_versions": {
     "f41": {
-      "version": "",
-      "zendver": ""
+      "version": "8.3.27",
+      "zendver": "20230831"
     },
     "f42": {
-      "version": "",
-      "zendver": ""
+      "version": "8.4.19",
+      "zendver": "20240924"
     },
     "rawhide": {
-      "version": "",
-      "zendver": ""
+      "version": "8.5.5",
+      "zendver": "20250925"
     }
   },
-  "last_checked": ""
+  "last_checked": "2026-04-03T07:02:21Z"
 }
