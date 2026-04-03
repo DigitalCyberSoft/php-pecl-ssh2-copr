@@ -1,0 +1,17 @@
+{
+  "php_versions": {
+    "f41": {
+      "version": "",
+      "zendver": ""
+    },
+    "f42": {
+      "version": "",
+      "zendver": ""
+    },
+    "rawhide": {
+      "version": "",
+      "zendver": ""
+    }
+  },
+  "last_checked": ""
+}
