@@ -1,13 +1,13 @@
 {
   "php-ssh2": {
-    "version": "1.4.1",
-    "commit": "5167e58cd7b61a175ae9d8b1d873deced53a9713",
-    "short_commit": "5167e58",
-    "commit_date": "2025-11-23T11:41:43Z",
-    "commit_message": "Typofix (php_ssh2_fopen_wraper_parse_path -> php_ssh2_fopen_wrapper_parse_path)",
+    "version": "1.5.0",
+    "commit": "d96bcc586a76b02937beef94dea0f3676fb52257",
+    "short_commit": "d96bcc5",
+    "commit_date": "",
+    "commit_message": "",
     "repository": "https://github.com/php/pecl-networking-ssh2",
     "pecl_url": "https://pecl.php.net/package/ssh2",
-    "last_checked": "2026-04-03T00:00:00Z"
+    "last_checked": "2026-04-05T01:54:11Z"
   },
-  "last_update": "2026-04-03T00:00:00Z"
+  "last_update": "2026-04-05T01:54:11Z"
 }
