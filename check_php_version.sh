@@ -53,7 +53,7 @@ fetch_spec() {
 
     if [ -z "${!cache_var}" ]; then
         local spec
-        spec=$(curl -sf "https://src.fedoraproject.org/rpms/php/raw/${branch}/f/php.spec" 2>/dev/null) || true
+        spec=$(curl -sf --connect-timeout 15 --max-time 60 --retry 3 --retry-all-errors "https://src.fedoraproject.org/rpms/php/raw/${branch}/f/php.spec" 2>/dev/null) || true
         eval "${cache_var}=\"\${spec}\""
     fi
 
@@ -154,10 +154,10 @@ FOOTER
 check_ext_version() {
     local new_ver
     # pecl-networking-ssh2 uses tags like RELEASE_1_2, but also has GitHub releases
-    new_ver=$(curl -sf "https://api.github.com/repos/${EXT_GITHUB_REPO}/releases/latest" 2>/dev/null | sed -n 's/.*"tag_name": *"v\?\([^"]*\)".*/\1/p')
+    new_ver=$(curl -sf --connect-timeout 15 --max-time 60 --retry 3 --retry-all-errors "https://api.github.com/repos/${EXT_GITHUB_REPO}/releases/latest" 2>/dev/null | sed -n 's/.*"tag_name": *"v\?\([^"]*\)".*/\1/p')
     if [ -z "$new_ver" ]; then
         # Fallback: check tags
-        new_ver=$(curl -sf "https://api.github.com/repos/${EXT_GITHUB_REPO}/tags?per_page=1" 2>/dev/null | sed -n 's/.*"name": *"v\?\([^"]*\)".*/\1/p')
+        new_ver=$(curl -sf --connect-timeout 15 --max-time 60 --retry 3 --retry-all-errors "https://api.github.com/repos/${EXT_GITHUB_REPO}/tags?per_page=1" 2>/dev/null | sed -n 's/.*"name": *"v\?\([^"]*\)".*/\1/p')
     fi
     if [ -z "$new_ver" ]; then echo "  Extension version: unknown (API error)"; return 1; fi
     local saved_ver=""
