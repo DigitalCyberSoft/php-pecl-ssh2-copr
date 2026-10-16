@@ -1,13 +1,13 @@
 {
   "php-ssh2": {
     "version": "1.5.0",
-    "commit": "20e3013a3d51aec885cdc9f11c85bd0cbaddce19",
-    "short_commit": "20e3013",
-    "commit_date": "2026-08-28T20:32:23Z",
-    "commit_message": "Fix SFTP path corruption for root-path URLs",
+    "commit": "5cca4eb434245633641ea99ae5ea67616ea8d41b",
+    "short_commit": "5cca4eb",
+    "commit_date": "2026-10-16T13:57:41Z",
+    "commit_message": "Fix tests",
     "repository": "https://github.com/php/pecl-networking-ssh2",
     "pecl_url": "https://pecl.php.net/package/ssh2",
-    "last_checked": "2026-10-15T02:42:17Z"
+    "last_checked": "2026-10-16T15:53:34Z"
   },
-  "last_update": "2026-10-15T02:42:17Z"
+  "last_update": "2026-10-16T15:53:34Z"
 }
