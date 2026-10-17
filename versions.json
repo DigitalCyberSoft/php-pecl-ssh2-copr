@@ -1,13 +1,13 @@
 {
   "php-ssh2": {
     "version": "1.5.0",
-    "commit": "5cca4eb434245633641ea99ae5ea67616ea8d41b",
-    "short_commit": "5cca4eb",
-    "commit_date": "2026-10-16T13:57:41Z",
-    "commit_message": "Fix tests",
+    "commit": "a33ec363278992261508c7e1de67f1d1918b1c0e",
+    "short_commit": "a33ec36",
+    "commit_date": "2026-08-11T13:10:46Z",
+    "commit_message": "Change package name from php/pecl-networking-ssh2 to pecl/ssh2",
     "repository": "https://github.com/php/pecl-networking-ssh2",
     "pecl_url": "https://pecl.php.net/package/ssh2",
-    "last_checked": "2026-10-16T15:53:34Z"
+    "last_checked": "2026-10-17T02:30:29Z"
   },
-  "last_update": "2026-10-16T15:53:34Z"
+  "last_update": "2026-10-17T02:30:29Z"
 }
