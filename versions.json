@@ -1,13 +1,13 @@
 {
   "php-ssh2": {
     "version": "1.6.0",
-    "commit": "4b8098d6efc1b41fb66cb04495926e92ed84ba3b",
-    "short_commit": "4b8098d",
-    "commit_date": "2026-10-17T19:14:32Z",
-    "commit_message": "Release 1.6.0",
+    "commit": "37afb36ed226b740b824c0538b8550829910f787",
+    "short_commit": "37afb36",
+    "commit_date": "2026-11-03T15:24:28Z",
+    "commit_message": "Fix and cleanup github actions",
     "repository": "https://github.com/php/pecl-networking-ssh2",
     "pecl_url": "https://pecl.php.net/package/ssh2",
-    "last_checked": "2026-10-18T02:31:01Z"
+    "last_checked": "2026-11-03T18:55:23Z"
   },
-  "last_update": "2026-10-18T02:31:01Z"
+  "last_update": "2026-11-03T18:55:23Z"
 }
