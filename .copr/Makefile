@@ -43,37 +43,17 @@ srpm:
 	cd pecl-networking-ssh2-master && \
 	COMMIT=$$(git rev-parse HEAD); \
 	SHORTCOMMIT=$$(git rev-parse --short HEAD); \
+	COMMITDATE=$$(TZ=UTC git log -1 --format=%cd --date=format-local:%Y%m%d%H%M%S); \
 	VERSION=$$(sed -n '/#define PHP_SSH2_VERSION/{s/.*"\([^"]*\)".*/\1/p}' php_ssh2.h); \
 	if [ -z "$$VERSION" ]; then \
 		VERSION=$$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v\?RELEASE_//;s/_/./g') || VERSION="1.4.1"; \
 	fi; \
 	echo "Commit: $$COMMIT"; \
 	echo "Short commit: $$SHORTCOMMIT"; \
+	echo "Commit date: $$COMMITDATE"; \
+	test -n "$$COMMITDATE" || { echo "ERROR: could not read the upstream commit date"; exit 1; }; \
 	echo "Version: $$VERSION"; \
 	cd ..; \
-	\
-	echo "=== Determining release number ==="; \
-	FULL_VERSION="$$VERSION"_"$$SHORTCOMMIT"; \
-	FEDORA_VER=$$(rpm -E %fedora 2>/dev/null || echo "42"); \
-	echo "Checking COPR for existing builds of version $$FULL_VERSION on Fedora $$FEDORA_VER"; \
-	COPR_URL="https://download.copr.fedorainfracloud.org/results/reversejames/php-pecl-ssh2/fedora-$$FEDORA_VER-x86_64"; \
-	BUILD_DIRS=$$(curl -s "$$COPR_URL/" 2>/dev/null | grep -oE '[0-9]+-php-pecl-ssh2' | head -10); \
-	EXISTING_RELEASES=""; \
-	for dir in $$BUILD_DIRS; do \
-		RPMS=$$(curl -s "$$COPR_URL/$$dir/" 2>/dev/null | grep -oE "php-pecl-ssh2-$$VERSION-[0-9]+.*git$$SHORTCOMMIT.*\.fc[0-9]+\.x86_64\.rpm" | head -1); \
-		if [ -n "$$RPMS" ]; then \
-			REL=$$(echo "$$RPMS" | sed "s/.*ssh2-$$VERSION-\([0-9]\+\).*\.fc[0-9]\+\.x86_64\.rpm/\1/"); \
-			EXISTING_RELEASES="$$EXISTING_RELEASES $$REL"; \
-		fi; \
-	done; \
-	if [ -n "$$EXISTING_RELEASES" ]; then \
-		MAX_REL=$$(echo $$EXISTING_RELEASES | tr ' ' '\n' | sort -n | tail -1); \
-		RELEASE_NUM=$$(($$MAX_REL + 1)); \
-		echo "Found existing release $$MAX_REL, incrementing to $$RELEASE_NUM"; \
-	else \
-		RELEASE_NUM=1; \
-		echo "No existing builds found for $$FULL_VERSION, starting with release 1"; \
-	fi; \
 	\
 	echo "=== Creating php-pecl-ssh2 tarball ==="; \
 	tar czf ssh2-$$VERSION.tar.gz -C . pecl-networking-ssh2-master --transform "s/^pecl-networking-ssh2-master/ssh2-$$VERSION/" || exit 1; \
@@ -94,7 +74,7 @@ srpm:
 	echo 'Summary:       PHP bindings for libssh2'; \
 	echo 'Name:          php-pecl-%{pecl_name}'; \
 	echo "Version:       $$VERSION"; \
-	echo "Release:       $(RELEASE).$${RELEASE_NUM}.git$${SHORTCOMMIT}%{?dist}"; \
+	echo "Release:       $(RELEASE).$${COMMITDATE}git$${SHORTCOMMIT}%{?dist}"; \
 	echo 'License:       PHP-3.01'; \
 	echo 'URL:           https://github.com/php/pecl-networking-ssh2'; \
 	echo 'Source0:       ssh2-%{version}.tar.gz'; \
@@ -215,7 +195,7 @@ srpm:
 	echo '%endif'; \
 	echo ''; \
 	echo '%changelog'; \
-	echo "* $$(date '+%a %b %d %Y') COPR Builder - $$VERSION-$$RELEASE_NUM.git$$SHORTCOMMIT"; \
+	echo "* $$(date '+%a %b %d %Y') COPR Builder - $$VERSION-$(RELEASE).$${COMMITDATE}git$$SHORTCOMMIT"; \
 	echo '- Automated build from GitHub master branch'; \
 	echo "- Git commit: $$SHORTCOMMIT"; \
 	) > php-pecl-ssh2.spec || exit 1; \
